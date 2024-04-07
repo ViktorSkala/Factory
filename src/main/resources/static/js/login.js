@@ -17,12 +17,8 @@ $(document).ready(function() {
             data: JSON.stringify(loginRequest),
             success: function(response) {
                 var token = response.token;
-
-                // Сохраняем токен в localStorage
                 localStorage.setItem("jwtToken", token);
-                console.log("token - " + localStorage.getItem("jwtToken"))
 
-                // Успешный запрос
                 alert("Login successful!");
                 window.location.href = '/index.html';
             },

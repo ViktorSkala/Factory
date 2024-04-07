@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Token Info</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<h1>Token Information</h1>
+
+<div id="token-info">
+    <p>Loading...</p>
+</div>
+
+<script>
+    $(document).ready(function() {
+        var token = localStorage.getItem("jwtToken");
+
+        $.ajax({
+            url: '/token-info',
+            type: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            success: function(data) {
+                displayTokenInfo(data);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $('#token-info').html('<p>Error fetching token information: ' + textStatus + '</p>');
+            }
+        });
+
+        function displayTokenInfo(data) {
+            var tokenInfoHtml = '<p><strong>Token Creation Time:</strong> ' + data.issuedAt + '</p>';
+            tokenInfoHtml += '<p><strong>Token Expiration Time:</strong> ' + data.expiration + '</p>';
+            tokenInfoHtml += '<p><strong>Actual System Time:</strong> ' + data.actualTime + '</p>';
+            tokenInfoHtml += '<p><strong>Token Subject:</strong> ' + data.subject + '</p>';
+            $('#token-info').html(tokenInfoHtml);
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -3,6 +3,7 @@ package com.example.factory.controller;
 import com.example.factory.dto.EmployeeDto;
 import com.example.factory.dto.LoginRequest;
 import com.example.factory.dto.LoginResponse;
+import com.example.factory.dto.TokenDto;
 import com.example.factory.georetriver.GeoRetriever;
 import com.example.factory.georetriver.Location;
 import com.example.factory.jwt.JwtUtils;
@@ -11,6 +12,7 @@ import com.example.factory.model.Role;
 import com.example.factory.service.EmployeeService;
 import com.example.factory.service.RoleService;
 import com.example.factory.telegrambot.CustomBot;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
@@ -57,6 +59,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
+        System.out.println("login controller begin");
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         User principal = (User) authentication.getPrincipal();
@@ -93,8 +96,6 @@ public class AuthController {
 
     @GetMapping("/login/oauth2/code/google")
     public void oauthLoginFinish(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        System.out.println(request);
-        System.out.println(response);
         OAuth2AuthenticationToken auth2Token = (OAuth2AuthenticationToken) authentication;
         OAuth2User auth2User = auth2Token.getPrincipal();
 
@@ -137,5 +138,19 @@ public class AuthController {
             return ResponseEntity.internalServerError().build();
         }
         return ResponseEntity.ok().body(EmployeeDto.of(employeeService.findByEmail(authUser.getUsername())));
+    }
+
+    @GetMapping("/token-info")
+    public ResponseEntity<?> getTokenInfo(HttpServletRequest request) {
+        System.out.println("getTokenInfo method starts");
+        String header = request.getHeader("Authorization");
+        if (Objects.isNull(header) || !header.startsWith("Bearer ")) {
+            return ResponseEntity.ok().body("Token not exist");
+        }
+        String token = header.substring("Bearer ".length());
+        Claims claims = jwtUtils.getClaims(token);
+
+        TokenDto tokenDto = TokenDto.of(claims);
+        return ResponseEntity.ok().body(tokenDto);
     }
 }

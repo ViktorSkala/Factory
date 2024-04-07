@@ -27,12 +27,17 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        System.out.println("token filter begin");
+        System.out.println("check token exist");
         if(!hasAuthorizationBearer(request)) {
+            System.out.println("token exist");
             filterChain.doFilter(request, response);
             return;
         }
         String token = getAccessToken(request);
+        System.out.println("check token valid");
         if (!jwtUtils.validateJwtToken(token)) {
+            System.out.println("token valid");
             filterChain.doFilter(request, response);
             return;
         }

@@ -7,7 +7,9 @@ import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,6 +27,7 @@ public class JwtUtils {
     public String generateJwtToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
+                .setIssuedAt(Date.from(Instant.now()))
                 .setExpiration(expiredTime())
                 .signWith(getSecretKey(), SignatureAlgorithm.HS512)
                 .compact();
@@ -38,9 +41,9 @@ public class JwtUtils {
         LocalDateTime localDateTime = LocalDateTime.now();
         LocalDateTime midday = localDateTime.withHour(12).withMinute(0).withSecond(0).withNano(0);
         if (localDateTime.isBefore(midday)) {
-            return Date.from(midday.toInstant(ZoneOffset.of("+2")));
+            return Date.from(midday.atZone(ZoneId.systemDefault()).toInstant());
         } else {
-            return Date.from(localDateTime.plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0).toInstant(ZoneOffset.of("+2")));
+            return Date.from(localDateTime.plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0).atZone(ZoneId.systemDefault()).toInstant());
         }
     }
 
