@@ -59,7 +59,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
-        System.out.println("login controller begin");
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         User principal = (User) authentication.getPrincipal();
@@ -142,7 +141,6 @@ public class AuthController {
 
     @GetMapping("/token-info")
     public ResponseEntity<?> getTokenInfo(HttpServletRequest request) {
-        System.out.println("getTokenInfo method starts");
         String header = request.getHeader("Authorization");
         if (Objects.isNull(header) || !header.startsWith("Bearer ")) {
             return ResponseEntity.ok().body("Token not exist");
