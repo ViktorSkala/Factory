@@ -12,18 +12,13 @@ $(document).ready(function () {
             url: "/machine/all",
             type: "GET",
             dataType: "json",
-            beforeSend: function(xhr) {
-                var jwtToken = localStorage.getItem("jwtToken");
-                if (jwtToken) {
-                    xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-                }
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem("jwtToken")
             },
             success: function (data) {
-                // Очищаем выпадающий список перед обновлением
                 $("#machine-name").empty();
 
                 $("#machine-name").append("<option value='' selected>Оберіть машину</option>");
-                // Добавляем каждую машину в выпадающий список
                 data.forEach(function (machine) {
                     $("#machine-name").append("<option value='" + machine.id + "'>" + machine.name + "</option>");
                 });
@@ -32,7 +27,7 @@ $(document).ready(function () {
                 if (xhr.status == 401) {
                     window.location.href = '/login.html';
                 } else if (xhr.status == 403) {
-                    window.location.href = '/unauthorized.html';
+                    window.location.href = '/access-denied.html';
                 } else {
                     alert(xhr.responseText);
                 }
@@ -40,7 +35,6 @@ $(document).ready(function () {
         });
     }
 
-    // Инициализация страницы
     fillMachineDropdown();
 
     function fillProductDropdown() {
@@ -48,18 +42,13 @@ $(document).ready(function () {
             url: "/product/allDto",
             type: "GET",
             dataType: "json",
-            beforeSend: function(xhr) {
-                var jwtToken = localStorage.getItem("jwtToken");
-                if (jwtToken) {
-                    xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-                }
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem("jwtToken")
             },
             success: function (data) {
-                // Очищаем выпадающий список продуктов перед обновлением
                 $("#product-name").empty();
 
                 $("#product-name").append("<option value='' selected>Оберіть продукт</option>");
-                // Добавляем каждый продукт в выпадающий список
                 data.forEach(function (productDto) {
                     $("#product-name").append("<option value='" + productDto.id + "'>" + productDto.productName + " " + productDto.machineName + "</option>");
                 });
@@ -68,7 +57,7 @@ $(document).ready(function () {
                 if (xhr.status == 401) {
                     window.location.href = '/login.html';
                 } else if (xhr.status == 403) {
-                    window.location.href = '/unauthorized.html';
+                    window.location.href = '/access-denied.html';
                 } else {
                     alert(xhr.responseText);
                 }
@@ -76,7 +65,6 @@ $(document).ready(function () {
         });
     }
 
-    // Инициализация страницы
     fillProductDropdown();
 
     function fillBaseTypesDropdown() {
@@ -84,18 +72,13 @@ $(document).ready(function () {
             url: "/base_type_stoppage/all",
             type: "GET",
             dataType: "json",
-            beforeSend: function(xhr) {
-                var jwtToken = localStorage.getItem("jwtToken");
-                if (jwtToken) {
-                    xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-                }
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem("jwtToken")
             },
             success: function (data) {
-                // Очищаем список машин перед обновлением
                 $("#base-type-name").empty();
 
                 $("#base-type-name").append("<option value='' selected>Оберіть базовий тип</option>");
-                // Добавляем каждую машину в выпадающий список
                 data.forEach(function (baseStoppageDto) {
                     $("#base-type-name").append("<option value='" + baseStoppageDto.id + "'>" + baseStoppageDto.name + "</option>");
                 });
@@ -104,7 +87,7 @@ $(document).ready(function () {
                 if (xhr.status == 401) {
                     window.location.href = '/login.html';
                 } else if (xhr.status == 403) {
-                    window.location.href = '/unauthorized.html';
+                    window.location.href = '/access-denied.html';
                 } else {
                     alert(xhr.responseText);
                 }
@@ -119,18 +102,13 @@ $(document).ready(function () {
             url: "/sub_type_stoppage/all",
             type: "GET",
             dataType: "json",
-            beforeSend: function(xhr) {
-                var jwtToken = localStorage.getItem("jwtToken");
-                if (jwtToken) {
-                    xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-                }
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem("jwtToken")
             },
             success: function (data) {
-                // Очищаем список машин перед обновлением
                 $("#sub-type-name").empty();
 
                 $("#sub-type-name").append("<option value='' selected>Оберіть підтип</option>");
-                // Добавляем каждую машину в выпадающий список
                 data.forEach(function (subStoppageDto) {
                     $("#sub-type-name").append("<option value='" + subStoppageDto.id + "'>" + subStoppageDto.name + "</option>");
                 });
@@ -139,7 +117,7 @@ $(document).ready(function () {
                 if (xhr.status == 401) {
                     window.location.href = '/login.html';
                 } else if (xhr.status == 403) {
-                    window.location.href = '/unauthorized.html';
+                    window.location.href = '/access-denied.html';
                 } else {
                     alert(xhr.responseText);
                 }
@@ -150,28 +128,20 @@ $(document).ready(function () {
     fillSubTypesDropdown();
 
     $("#machine-name").on("change", function () {
-        // Получение выбранного id машины
         var machineId = $(this).val();
 
-        // Проверка, что машина выбрана
         if (machineId) {
-            // Загрузка списка продуктов для выбранной машины
             $.ajax({
                 url: "/product/all/byMachineId/" + machineId,
                 type: "GET",
                 dataType: "json",
-                beforeSend: function(xhr) {
-                    var jwtToken = localStorage.getItem("jwtToken");
-                    if (jwtToken) {
-                        xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-                    }
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem("jwtToken")
                 },
                 success: function (data) {
-                    // Очищаем выпадающий список продуктов перед обновлением
                     $("#product-name").empty();
 
                     $("#product-name").append("<option value='' selected>Оберіть продукт</option>");
-                    // Добавляем каждый продукт в выпадающий список
                     data.forEach(function (productDto) {
                         $("#product-name").append("<option value='" + productDto.id + "'>" + productDto.productName + "</option>");
                     });
@@ -180,7 +150,7 @@ $(document).ready(function () {
                     if (xhr.status == 401) {
                         window.location.href = '/login.html';
                     } else if (xhr.status == 403) {
-                        window.location.href = '/unauthorized.html';
+                        window.location.href = '/access-denied.html';
                     } else {
                         alert(xhr.responseText);
                     }
@@ -192,28 +162,20 @@ $(document).ready(function () {
     });
 
     $("#base-type-name").on("change", function () {
-        // Получение выбранного id машины
         var baseStoppageId = $(this).val();
 
-        // Проверка, что машина выбрана
         if (baseStoppageId) {
-            // Загрузка списка продуктов для выбранной машины
             $.ajax({
                 url: "/sub_type_stoppage/all/by_base_stoppage/" + baseStoppageId,
                 type: "GET",
                 dataType: "json",
-                beforeSend: function(xhr) {
-                    var jwtToken = localStorage.getItem("jwtToken");
-                    if (jwtToken) {
-                        xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-                    }
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem("jwtToken")
                 },
                 success: function (data) {
-                    // Очищаем выпадающий список продуктов перед обновлением
                     $("#sub-type-name").empty();
 
                     $("#sub-type-name").append("<option value='' selected>Оберіть підтип</option>");
-                    // Добавляем каждый продукт в выпадающий список
                     data.forEach(function (subStoppage) {
                         $("#sub-type-name").append("<option value='" + subStoppage.id + "'>" + subStoppage.name + "</option>");
                     });
@@ -222,7 +184,7 @@ $(document).ready(function () {
                     if (xhr.status == 401) {
                         window.location.href = '/login.html';
                     } else if (xhr.status == 403) {
-                        window.location.href = '/unauthorized.html';
+                        window.location.href = '/access-denied.html';
                     } else {
                         alert(xhr.responseText);
                     }
@@ -233,24 +195,22 @@ $(document).ready(function () {
         }
     });
 
-    var currentPage = 0; // Текущая страница (изначально 0, так как в Pageable страницы нумеруются с 0)
+    var currentPage = 0;
     var totalPages = 1;
 
-    // Обработчики для кнопок пагинации
     $("#firstPage").on("click", function () {
-        currentPage = 0; // Переход на первую страницу
+        currentPage = 0;
         fetchData();
     });
 
     $("#prevPage").on("click", function () {
         if (currentPage > 0) {
-            currentPage--; // Переход на предыдущую страницу
+            currentPage--;
             fetchData();
         }
     });
 
     $("#nextPage").on("click", function () {
-        // Переход на следующую страницу
         if (currentPage < totalPages - 1) {
             currentPage++;
             fetchData();
@@ -258,13 +218,11 @@ $(document).ready(function () {
     });
 
     $("#lastPage").on("click", function () {
-        currentPage = totalPages - 1; // Переход на последнюю страницу
+        currentPage = totalPages - 1;
         fetchData();
     });
 
-    // Функция для получения данных с сервера с учетом текущей страницы
     function fetchData() {
-        // Получение значений из полей ввода
         const machineId = $("#machine-name").val();
         const productId = $("#product-name").val();
         const baseTypeStoppageId = $("#base-type-name").val();
@@ -276,7 +234,6 @@ $(document).ready(function () {
         const finalDurationEnd = durationEnd === 0 ? 9999999999 : durationEnd;
         const pageSize = parseInt($("#stoppagesOnPage").val()) || 20;
 
-        // Создание объекта StoppageFilterDto без указания текущей страницы
         const stoppageFilterDto = {
             machineId: machineId,
             productId: productId,
@@ -288,26 +245,20 @@ $(document).ready(function () {
             durationEnd: finalDurationEnd
         };
 
-        // Отправка GET-запроса на /stoppage/all_by_criteria с параметрами пагинации
         $.ajax({
-            url: `/stoppage/all_by_criteria_paged?page=${currentPage}&size=${pageSize}`, // Пример, где size - количество элементов на странице
+            url: `/stoppage/all_by_criteria_paged?page=${currentPage}&size=${pageSize}`,
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify(stoppageFilterDto),
-            beforeSend: function(xhr) {
-                var jwtToken = localStorage.getItem("jwtToken");
-                if (jwtToken) {
-                    xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-                }
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem("jwtToken")
             },
             success: function (data) {
-                totalPages = data.totalPages; // Обновление общего количества страниц
-                $("#currentPage").text(currentPage + 1); // Обновление номера текущей страницы
+                totalPages = data.totalPages;
+                $("#currentPage").text(currentPage + 1);
 
-                // Очищаем список перед обновлением
                 $("#stoppage-list-container").empty();
 
-                // Добавляем каждое производство в список
                 data.content.forEach(function (stoppageResponseDto) {
                     var listItem = $("<li>").addClass("stoppage-item");
                     var startDate = $("<span>").text(stoppageResponseDto.startDate);
@@ -328,7 +279,7 @@ $(document).ready(function () {
                 if (xhr.status == 401) {
                     window.location.href = '/login.html';
                 } else if (xhr.status == 403) {
-                    window.location.href = '/unauthorized.html';
+                    window.location.href = '/access-denied.html';
                 } else {
                     alert(xhr.responseText);
                 }
@@ -342,7 +293,6 @@ $(document).ready(function () {
 
     $("#showDiagram").on("click", function () {
 
-        // Получение значений из полей ввода
         const machineId = $("#machine-name").val();
         const productId = $("#product-name").val();
         const baseTypeStoppageId = $("#base-type-name").val();
@@ -353,7 +303,6 @@ $(document).ready(function () {
         const durationEnd = (parseInt($("#days-end").val()) || 0) * 86400 + (parseInt($("#hours-end").val()) || 0) * 3600 + (parseInt($("#minutes-end").val()) || 0) * 60 + (parseInt($("#seconds-end").val()) || 0);
         const finalDurationEnd = durationEnd === 0 ? 9999999999 : durationEnd;
 
-        // Создание объекта StoppageCreateDto
         const stoppageFilterDto = {
             machineId: machineId,
             productId: productId,
@@ -367,24 +316,18 @@ $(document).ready(function () {
 
         var selectedParameter = $("#group-by-parameter").val();
 
-        // Получите элемент canvas
         var canvas = document.getElementById('barChart');
 
-        // Установите желаемые размеры
         canvas.width = 1200;
         canvas.height = 400;
 
-        // Отправка POST-запроса на /stoppage/{id}
         $.ajax({
             url: "/stoppage/all_by_criteria",
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify(stoppageFilterDto),
-            beforeSend: function(xhr) {
-                var jwtToken = localStorage.getItem("jwtToken");
-                if (jwtToken) {
-                    xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-                }
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem("jwtToken")
             },
             success: function (data) {
                 var durationSumByParameter = {};
@@ -401,14 +344,13 @@ $(document).ready(function () {
                 var chartLabels = Object.keys(durationSumByParameter);
                 var chartData = Object.values(durationSumByParameter);
 
-                // Отображение графика
                 displayBarChart(chartLabels, chartData);
             },
             error: function (xhr) {
                 if (xhr.status == 401) {
                     window.location.href = '/login.html';
                 } else if (xhr.status == 403) {
-                    window.location.href = '/unauthorized.html';
+                    window.location.href = '/access-denied.html';
                 } else {
                     alert(xhr.responseText);
                 }
@@ -418,9 +360,7 @@ $(document).ready(function () {
 
     var myChart;
 
-    // Функция для отображения графика
     function displayBarChart(labels, data) {
-        // Уничтожаем предыдущий график, если он существует
         if (myChart) {
             myChart.destroy();
         }
@@ -443,8 +383,8 @@ $(document).ready(function () {
                         beginAtZero: true
                     }
                 },
-                maintainAspectRatio: true, // отключает сохранение пропорций
-                responsive: false, // позволяет графику адаптироваться к размерам контейнера
+                maintainAspectRatio: true,
+                responsive: false,
             }
         });
     }

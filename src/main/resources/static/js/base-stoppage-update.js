@@ -1,30 +1,22 @@
 $(document).ready(function () {
-    // Получение параметра id из URL
     const urlParams = new URLSearchParams(window.location.search);
     const baseStoppageId = urlParams.get('id');
 
-    // Запрос на получение данных о машине
     $.ajax({
         url: '/base_type_stoppage/' + baseStoppageId,
         type: 'GET',
-        beforeSend: function(xhr) {
-            var jwtToken = localStorage.getItem("jwtToken");
-            if (jwtToken) {
-                xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-            }
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem("jwtToken")
         },
         success: function (baseStoppageDto) {
-            // Заполнение формы данными о машине
             $('#base-stoppage-name').val(baseStoppageDto.name);
 
-            // Обработчик события для кнопки "Обновить машину"
             $('#update-base-stoppage').on('click', function () {
                 const updatedStoppageData = {
                     id: baseStoppageId,
                     name: $('#base-stoppage-name').val()
                 };
 
-                // Отправка PUT запроса с обновленными данными
                 $.ajax({
                     url: '/base_type_stoppage/' + baseStoppageId,
                     type: 'PUT',
@@ -44,7 +36,7 @@ $(document).ready(function () {
                         if (xhr.status == 401) {
                             window.location.href = '/login.html';
                         } else if (xhr.status == 403) {
-                            window.location.href = '/unauthorized.html';
+                            window.location.href = '/access-denied.html';
                         } else {
                             alert(xhr.responseText);
                         }
@@ -56,7 +48,7 @@ $(document).ready(function () {
             if (xhr.status == 401) {
                 window.location.href = '/login.html';
             } else if (xhr.status == 403) {
-                window.location.href = '/unauthorized.html';
+                window.location.href = '/access-denied.html';
             } else {
                 alert(xhr.responseText);
             }

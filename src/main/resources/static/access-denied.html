@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unauthorized</title>
+    <title>Access denied</title>
     <link rel="stylesheet" href="/css/common.css">
 </head>
 <body>
@@ -17,6 +17,7 @@
     <button id="products">Продукти</button>
     <button id="charts">Графіки</button>
     <button id="reports">Звіти</button>
+    <button id="info">Про проект</button>
     <button id="logout">Logout</button>
 </div>
 
@@ -30,39 +31,11 @@
     </div>
 </div>
 
-<div id="unauthorizedMessage"></div>
+<div id="accessDeniedMessage"></div>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="/js/header.js"></script>
-
-<script>
-    $(document).ready(function() {
-        $.ajax({
-            url: "/unauthorized",
-            type: "GET",
-            contentType: "application/json",
-            dataType: "json",
-            beforeSend: function(xhr) {
-                var jwtToken = localStorage.getItem("jwtToken");
-                if (jwtToken) {
-                    xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-                }
-            },
-            success: function (data) {
-                $("#unauthorizedMessage").text("Access denied for user: " + data.firstName + " " + data.lastName + ".");
-            },
-            error: function (xhr) {
-                if (xhr.status == 401) {
-                    window.location.href = '/login.html';
-                } else if (xhr.status == 403) {
-                    window.location.href = '/unauthorized.html';
-                } else {
-                    alert(xhr.responseText);
-                }
-            }
-        });
-    });
-</script>
+<script src="/js/access-denied.js"></script>
 
 </body>
 </html>

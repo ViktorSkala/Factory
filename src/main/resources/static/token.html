@@ -14,33 +14,7 @@
     <p>Loading...</p>
 </div>
 
-<script>
-    $(document).ready(function() {
-        var token = localStorage.getItem("jwtToken");
-
-        $.ajax({
-            url: '/token-info',
-            type: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + token
-            },
-            success: function(data) {
-                displayTokenInfo(data);
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                $('#token-info').html('<p>Error fetching token information: ' + textStatus + '</p>');
-            }
-        });
-
-        function displayTokenInfo(data) {
-            var tokenInfoHtml = '<p><strong>Token Creation Time:</strong> ' + data.issuedAt + '</p>';
-            tokenInfoHtml += '<p><strong>Token Expiration Time:</strong> ' + data.expiration + '</p>';
-            tokenInfoHtml += '<p><strong>Actual System Time:</strong> ' + data.actualTime + '</p>';
-            tokenInfoHtml += '<p><strong>Token Subject:</strong> ' + data.subject + '</p>';
-            $('#token-info').html(tokenInfoHtml);
-        }
-    });
-</script>
+<script src="/js/token.js"></script>
 
 </body>
 </html>

@@ -4,22 +4,17 @@ $(document).ready(function () {
         duration: "null"
     };
 
-    //Загрузка незавершенных остановок
     $.ajax({
         url: "/stoppage/not_finished/all_filtered",
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(stoppageFilterDto),
-        beforeSend: function(xhr) {
-            var jwtToken = localStorage.getItem("jwtToken");
-            if (jwtToken) {
-                xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-            }
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem("jwtToken")
         },
         success: function (data) {
             $("stoppage-creation-list-container").empty();
 
-            // Проверяем, есть ли простои для вывода
             if (data.length > 0) {
                 $("#stoppage-creation-list").prepend("<h3>Діючи простої:</h3>");
             }
@@ -41,23 +36,19 @@ $(document).ready(function () {
             if (xhr.status == 401) {
                 window.location.href = '/login.html';
             } else if (xhr.status == 403) {
-                window.location.href = '/unauthorized.html';
+                window.location.href = '/access-denied.html';
             } else {
                 alert(xhr.responseText);
             }
         }
     });
 
-    // Загрузка списка действующих производств
     $.ajax({
         url: "/production/all",
         type: "GET",
         dataType: "json",
-        beforeSend: function(xhr) {
-            var jwtToken = localStorage.getItem("jwtToken");
-            if (jwtToken) {
-                xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-            }
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem("jwtToken")
         },
         success: function (data) {
             $("#production-list-container").empty();
@@ -78,23 +69,19 @@ $(document).ready(function () {
             if (xhr.status == 401) {
                 window.location.href = '/login.html';
             } else if (xhr.status == 403) {
-                window.location.href = '/unauthorized.html';
+                window.location.href = '/access-denied.html';
             } else {
                 alert(xhr.responseText);
             }
         }
     });
 
-    // Загрузка списка машин
     $.ajax({
         url: "/machine/all",
         type: "GET",
         dataType: "json",
-        beforeSend: function(xhr) {
-            var jwtToken = localStorage.getItem("jwtToken");
-            if (jwtToken) {
-                xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-            }
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem("jwtToken")
         },
         success: function (data) {
             $("#machine-select").empty();
@@ -108,7 +95,7 @@ $(document).ready(function () {
             if (xhr.status == 401) {
                 window.location.href = '/login.html';
             } else if (xhr.status == 403) {
-                window.location.href = '/unauthorized.html';
+                window.location.href = '/access-denied.html';
             } else {
                 alert(xhr.responseText);
             }
@@ -119,16 +106,12 @@ $(document).ready(function () {
         var machineId = $(this).val();
 
         if (machineId) {
-            // Загрузка списка продуктов для выбранной машины
             $.ajax({
                 url: "/product/all/byMachineId/" + machineId,
                 type: "GET",
                 dataType: "json",
-                beforeSend: function(xhr) {
-                    var jwtToken = localStorage.getItem("jwtToken");
-                    if (jwtToken) {
-                        xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-                    }
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem("jwtToken")
                 },
                 success: function (data) {
                     $("#product-select").empty();
@@ -142,7 +125,7 @@ $(document).ready(function () {
                     if (xhr.status == 401) {
                         window.location.href = '/login.html';
                     } else if (xhr.status == 403) {
-                        window.location.href = '/unauthorized.html';
+                        window.location.href = '/access-denied.html';
                     } else {
                         alert(xhr.responseText);
                     }
@@ -151,7 +134,6 @@ $(document).ready(function () {
         }
     });
 
-    // Обработчик клика по кнопке "Запустить"
     $("#start-production").on("click", function () {
         var machineId = $("#machine-select").val();
         var productId = $("#product-select").val();
@@ -161,27 +143,22 @@ $(document).ready(function () {
             machineId: machineId
         };
 
-        // Отправляем GET-запрос на сервер
         $.ajax({
             url: "/production/start",
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify(productionData),
-            beforeSend: function(xhr) {
-                var jwtToken = localStorage.getItem("jwtToken");
-                if (jwtToken) {
-                    xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-                }
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem("jwtToken")
             },
             success: function () {
-                // Перезагрузка страницы после успешного запуска
                 location.reload();
             },
             error: function (xhr) {
                 if (xhr.status == 401) {
                     window.location.href = '/login.html';
                 } else if (xhr.status == 403) {
-                    window.location.href = '/unauthorized.html';
+                    window.location.href = '/access-denied.html';
                 } else {
                     alert(xhr.responseText);
                 }

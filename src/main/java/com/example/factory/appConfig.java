@@ -9,11 +9,6 @@ import java.util.Map;
 @Configuration
 public class appConfig {
 
-//    @Bean
-//    public ProductName productName() {
-//        return ProductName.ANY_NAME;
-//    }
-
     @Bean
     public ThreadGroup createThreadGroup() {
         return new ThreadGroup("ProductionThreads");

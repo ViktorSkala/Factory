@@ -19,20 +19,19 @@ $('#continueBtn').on('click', function () {
 });
 
 $('#sendBtn').on('click', function () {
-    var message = $('#messageInput').val();
     const messageDto = {
-        message: message
+        message: $('#messageInput').val()
     };
     $.ajax({
         url: "/send-message",
         type: "POST",
         contentType: 'application/json',
         data: JSON.stringify(messageDto),
-        success: function (response) {
+        success: function () {
             alert('Message sent successfully!');
             hideMessageModal();
         },
-        error: function (xhr, status, error) {
+        error: function (xhr) {
             alert('Error sending message: ' + xhr.responseText);
         }
     });

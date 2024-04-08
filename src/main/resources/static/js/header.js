@@ -76,11 +76,8 @@ $("#logout").on("click", function () {
     $.ajax({
         url: "/logout",
         type: "POST",
-        beforeSend: function(xhr) {
-            var jwtToken = localStorage.getItem("jwtToken");
-            if (jwtToken) {
-                xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-            }
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem("jwtToken")
         },
         success: function(response) {
             localStorage.clear();

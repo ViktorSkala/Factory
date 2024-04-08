@@ -14,7 +14,6 @@ import com.example.factory.service.RoleService;
 import com.example.factory.telegrambot.CustomBot;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,18 +21,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 @RestController
@@ -93,44 +88,7 @@ public class AuthController {
         return ResponseEntity.ok(EmployeeDto.of(employeeFromDb));
     }
 
-    @GetMapping("/login/oauth2/code/google")
-    public void oauthLoginFinish(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        OAuth2AuthenticationToken auth2Token = (OAuth2AuthenticationToken) authentication;
-        OAuth2User auth2User = auth2Token.getPrincipal();
-
-        Map<String, Object> attributes = auth2User.getAttributes();
-
-        Employee authEmployee = employeeService.findByEmail((String) attributes.get("email"));
-        if (Objects.isNull(authEmployee)) {
-            Employee employee = Employee.builder()
-                    .email((String) attributes.get("email"))
-                    .name((String) attributes.get("given_name"))
-                    .lastName((String) attributes.get("family_name"))
-                    .roles(roleService.getAll())
-                    .build();
-            authEmployee = employeeService.create(employee);
-            Location location = geoRetriever.getLocation(request.getRemoteAddr());
-            try {
-                telegramBot.sendMessage("User " + authEmployee.getEmail() + " registered from " + location.toString());
-            } catch (TelegramApiException e) {
-                System.out.println("Telegram bot send message exception " + e.getMessage());
-            }
-        }
-        String token = jwtUtils.generateJwtToken(authEmployee.getEmail());
-        try {
-            response.sendRedirect("/oauth2.html?token=" + token);
-        } catch (IOException e) {
-            System.out.println("response fault");;
-        }
-        Location location = geoRetriever.getLocation(request.getRemoteAddr());
-        try {
-            telegramBot.sendMessage("User " + authEmployee.getEmail() + " loged in from " + location.toString());
-        } catch (TelegramApiException e) {
-            System.out.println("Telegram bot send message exception " + e.getMessage());
-        }
-    }
-
-    @GetMapping("/unauthorized")
+    @GetMapping("/access-denied")
     public ResponseEntity<?> unauthorized() {
         User authUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (Objects.isNull(authUser)) {

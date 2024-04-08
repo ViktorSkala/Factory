@@ -17,8 +17,10 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
-@Data @Builder
-@NoArgsConstructor @AllArgsConstructor
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductGenerationThread implements Runnable {
 
     private String name;
@@ -63,7 +65,6 @@ public class ProductGenerationThread implements Runnable {
     }
 
     private void generateUnit() {
-//        System.out.println(LocalDateTime.now() + " " + state);
         if (!state.toString().equals("PAUSED")) {
             counterPerMinute++;
             System.out.println(counterPerMinute);

@@ -1,22 +1,16 @@
 $(document).ready(function () {
 
-    // Функция для получения списка машин
     function getSubTypes() {
         $.ajax({
             url: "/sub_type_stoppage/all",
             type: "GET",
             dataType: "json",
-            beforeSend: function(xhr) {
-                var jwtToken = localStorage.getItem("jwtToken");
-                if (jwtToken) {
-                    xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-                }
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem("jwtToken")
             },
             success: function (data) {
-                // Очищаем список машин перед обновлением
                 $("#sub-type-list-container").empty();
 
-                // Добавляем каждую машину в список
                 data.forEach(function (stoppageDto) {
                     var listItem = $("<li>").addClass("sub-stoppage-item");
 
@@ -31,11 +25,8 @@ $(document).ready(function () {
                         $.ajax({
                             url: '/sub_type_stoppage/' + stoppageDto.id,
                             type: 'DELETE',
-                            beforeSend: function(xhr) {
-                                var jwtToken = localStorage.getItem("jwtToken");
-                                if (jwtToken) {
-                                    xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-                                }
+                            headers: {
+                                'Authorization': 'Bearer ' + localStorage.getItem("jwtToken")
                             },
                             success: function () {
                                 location.reload();
@@ -44,7 +35,7 @@ $(document).ready(function () {
                                 if (xhr.status == 401) {
                                     window.location.href = '/login.html';
                                 } else if (xhr.status == 403) {
-                                    window.location.href = '/unauthorized.html';
+                                    window.location.href = '/access-denied.html';
                                 } else {
                                     alert(xhr.responseText);
                                 }
@@ -60,7 +51,7 @@ $(document).ready(function () {
                 if (xhr.status == 401) {
                     window.location.href = '/login.html';
                 } else if (xhr.status == 403) {
-                    window.location.href = '/unauthorized.html';
+                    window.location.href = '/access-denied.html';
                 } else {
                     alert(xhr.responseText);
                 }
@@ -68,7 +59,6 @@ $(document).ready(function () {
         });
     }
 
-    // Инициализация страницы
     getSubTypes();
 
     function fillBaseTypesDropdown() {
@@ -76,18 +66,13 @@ $(document).ready(function () {
             url: "/base_type_stoppage/all",
             type: "GET",
             dataType: "json",
-            beforeSend: function(xhr) {
-                var jwtToken = localStorage.getItem("jwtToken");
-                if (jwtToken) {
-                    xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-                }
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem("jwtToken")
             },
             success: function (data) {
-                // Очищаем список машин перед обновлением
                 $("#base-type-name").empty();
 
                 $("#base-type-name").append("<option value='' disabled selected>Оберіть базовий тип</option>");
-                // Добавляем каждую машину в выпадающий список
                 data.forEach(function (baseStoppageDto) {
                     $("#base-type-name").append("<option value='" + baseStoppageDto.id + "'>" + baseStoppageDto.name + "</option>");
                 });
@@ -96,7 +81,7 @@ $(document).ready(function () {
                 if (xhr.status == 401) {
                     window.location.href = '/login.html';
                 } else if (xhr.status == 403) {
-                    window.location.href = '/unauthorized.html';
+                    window.location.href = '/access-denied.html';
                 } else {
                     alert(xhr.responseText);
                 }
@@ -106,29 +91,23 @@ $(document).ready(function () {
 
     fillBaseTypesDropdown();
 
-    // Обработчик клика по кнопке "Добавить машину"
     $("#add-sub-type").on("click", function () {
         var baseTypeId = $("#base-type-name").val();
         var subTypeName = $("#sub-type-name").val();
 
-        // Создаем объект с данными машины
         var typeStoppageData = {
             name: subTypeName,
             baseTypeStoppageId: baseTypeId
         };
 
-        // Отправляем POST-запрос на сервер
         $.ajax({
             url: "/sub_type_stoppage",
             type: "POST",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(typeStoppageData),
             dataType: "json",
-            beforeSend: function(xhr) {
-                var jwtToken = localStorage.getItem("jwtToken");
-                if (jwtToken) {
-                    xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-                }
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem("jwtToken")
             },
             success: function (data) {
                 alert("Добавлен новий базовий тип простою: " + data.name);
@@ -142,7 +121,7 @@ $(document).ready(function () {
                 if (xhr.status == 401) {
                     window.location.href = '/login.html';
                 } else if (xhr.status == 403) {
-                    window.location.href = '/unauthorized.html';
+                    window.location.href = '/access-denied.html';
                 } else {
                     alert(xhr.responseText);
                 }

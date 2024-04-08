@@ -5,13 +5,11 @@ $(document).ready(function() {
         var email = $("#email").val();
         var password = $("#password").val();
 
-        // Очистка предыдущих ошибок
         $("#firstNameError").text("");
         $("#lastNameError").text("");
         $("#emailError").text("");
         $("#passwordError").text("");
 
-        // Отправка запроса на сервер
         $.ajax({
             type: "POST",
             url: "/register",
@@ -23,13 +21,10 @@ $(document).ready(function() {
                 "password": password
             }),
             success: function(response) {
-                // Успешная регистрация
                 alert("Registration successful!");
-                // Опционально: перенаправление на другую страницу
                 window.location.href = '/login.html';
             },
             error: function(xhr) {
-                // Ошибка при регистрации
                 var response = JSON.parse(xhr.responseText);
                 if (response.error === "invalid_firstName") {
                     $("#firstNameError").text("Invalid first name");

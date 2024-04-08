@@ -1,43 +1,33 @@
 $(document).ready(function () {
-    // Параметры из URL
     var urlParams = new URLSearchParams(window.location.search);
     var threadName = urlParams.get('threadName');
 
-    // Получение значений из полей ввода
     var machineId = 0;
     var productId = 0;
 
     $.ajax({
         url: "/production/info/" + encodeURIComponent(threadName),
         type: "GET",
-        beforeSend: function(xhr) {
-            var jwtToken = localStorage.getItem("jwtToken");
-            if (jwtToken) {
-                xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-            }
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem("jwtToken")
         },
         success: function (productionThreadDto) {
             $("#production-info").text("Процес: " + threadName + ", Стан: " + productionThreadDto.state);
             machineId = productionThreadDto.machineId;
             productId = productionThreadDto.productId;
 
-            // Создание объекта StoppageFilterDto без указания текущей страницы
             const stoppageFilterDto = {
                 machineId: machineId,
                 productId: productId,
             };
 
-            //Загрузка незавершенных остановок
             $.ajax({
                 url: "/stoppage/not_finished/all_filtered",
                 type: "POST",
                 contentType: "application/json",
                 data: JSON.stringify(stoppageFilterDto),
-                beforeSend: function(xhr) {
-                    var jwtToken = localStorage.getItem("jwtToken");
-                    if (jwtToken) {
-                        xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-                    }
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem("jwtToken")
                 },
                 success: function (data) {
                     $("stoppage-creation-list-container").empty();
@@ -59,7 +49,7 @@ $(document).ready(function () {
                     if (xhr.status == 401) {
                         window.location.href = '/login.html';
                     } else if (xhr.status == 403) {
-                        window.location.href = '/unauthorized.html';
+                        window.location.href = '/access-denied.html';
                     } else {
                         alert(xhr.responseText);
                     }
@@ -70,27 +60,21 @@ $(document).ready(function () {
             if (xhr.status == 401) {
                 window.location.href = '/login.html';
             } else if (xhr.status == 403) {
-                window.location.href = '/unauthorized.html';
+                window.location.href = '/access-denied.html';
             } else {
                 alert(xhr.responseText);
             }
         }
     });
 
-    // Обработчик кнопки "Приостановить"
     $("#pause-production").on("click", function () {
-        // Отправляем GET-запрос на сервер
         $.ajax({
             url: "/production/wait/" + encodeURIComponent(threadName),
             type: "GET",
-            beforeSend: function(xhr) {
-                var jwtToken = localStorage.getItem("jwtToken");
-                if (jwtToken) {
-                    xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-                }
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem("jwtToken")
             },
             success: function (stoppageResponseDto) {
-                //Переход на страницу создания простоя и сохранение его в базу данных
                 window.location.href = "/create-stoppage.html?stoppageId=" + stoppageResponseDto.id;
 
                 // // Создаем объект StoppageCreateDto
@@ -118,7 +102,7 @@ $(document).ready(function () {
                 //         if (xhr.status == 401) {
                 //             window.location.href = '/login.html';
                 //         } else if (xhr.status == 403) {
-                //             window.location.href = '/unauthorized.html';
+                //             window.location.href = '/access-denied.html';
                 //         } else {
                 //             alert(xhr.responseText);
                 //         }
@@ -129,7 +113,7 @@ $(document).ready(function () {
                 if (xhr.status == 401) {
                     window.location.href = '/login.html';
                 } else if (xhr.status == 403) {
-                    window.location.href = '/unauthorized.html';
+                    window.location.href = '/access-denied.html';
                 } else {
                     alert(xhr.responseText);
                 }
@@ -152,17 +136,13 @@ $(document).ready(function () {
     //     });
     // });
 
-    // Обработчик кнопки "Завершить"
     $("#finish-production").on("click", function () {
         // Отправляем GET-запрос на сервер
         $.ajax({
             url: "/production/finish/" + encodeURIComponent(threadName),
             type: "GET",
-            beforeSend: function(xhr) {
-                var jwtToken = localStorage.getItem("jwtToken");
-                if (jwtToken) {
-                    xhr.setRequestHeader("Authorization", "Bearer " + jwtToken);
-                }
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem("jwtToken")
             },
             success: function () {
                 window.location.href = "/production.html";
@@ -171,7 +151,7 @@ $(document).ready(function () {
                 if (xhr.status == 401) {
                     window.location.href = '/login.html';
                 } else if (xhr.status == 403) {
-                    window.location.href = '/unauthorized.html';
+                    window.location.href = '/access-denied.html';
                 } else {
                     alert(xhr.responseText);
                 }

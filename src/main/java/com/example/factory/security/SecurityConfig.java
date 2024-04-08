@@ -78,7 +78,7 @@ public class SecurityConfig {
                         .loginPage("/login.html"))
                 .exceptionHandling(e -> e
                         .authenticationEntryPoint(authEntryPoint)
-                        .accessDeniedPage("/unauthorized.html"))
+                        .accessDeniedPage("/access-denied.html"))
                 .logout(l -> l
                         .logoutUrl("/logout")
                         .logoutSuccessHandler((request,response,authentication) -> authJwtTokenFilter().deactivateToken(request))
