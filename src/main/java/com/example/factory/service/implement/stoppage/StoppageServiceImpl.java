@@ -7,7 +7,7 @@ import com.example.factory.model.Product;
 import com.example.factory.model.stoppage.BaseTypeStoppage;
 import com.example.factory.model.stoppage.Stoppage;
 import com.example.factory.model.stoppage.SubTypeStoppage;
-import com.example.factory.repositoty.stoppage.StoppageRepository;
+import com.example.factory.repository.stoppage.StoppageRepository;
 import com.example.factory.service.stoppage.StoppageService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.*;

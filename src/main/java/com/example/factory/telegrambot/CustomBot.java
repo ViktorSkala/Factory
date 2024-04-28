@@ -24,8 +24,6 @@ public class CustomBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-//        chatId = update.getMessage().getChatId();
-//        System.out.println(chatId);
         try {
             sendMessage("success");
         } catch (TelegramApiException e) {

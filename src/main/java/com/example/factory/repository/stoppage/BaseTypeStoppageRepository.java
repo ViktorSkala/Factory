@@ -1,6 +1,5 @@
-package com.example.factory.repositoty.stoppage;
+package com.example.factory.repository.stoppage;
 
-import com.example.factory.model.Machine;
 import com.example.factory.model.stoppage.BaseTypeStoppage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.lang.NonNull;

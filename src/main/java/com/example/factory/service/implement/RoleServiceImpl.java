@@ -1,9 +1,7 @@
 package com.example.factory.service.implement;
 
-import com.example.factory.model.Employee;
 import com.example.factory.model.Role;
-import com.example.factory.repositoty.EmployeeRepository;
-import com.example.factory.repositoty.RoleRepository;
+import com.example.factory.repository.RoleRepository;
 import com.example.factory.service.RoleService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;

@@ -2,9 +2,7 @@ package com.example.factory.controller;
 
 import com.example.factory.dto.stoppage.BaseTypeStoppageDto;
 import com.example.factory.model.stoppage.BaseTypeStoppage;
-import com.example.factory.repositoty.stoppage.BaseTypeStoppageRepository;
 import com.example.factory.service.stoppage.BaseTypeStoppageService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;

@@ -1,10 +1,9 @@
 package com.example.factory.service.implement.stoppage;
 
 import com.example.factory.dto.stoppage.SubTypeStoppageDto;
-import com.example.factory.model.stoppage.BaseTypeStoppage;
 import com.example.factory.model.stoppage.SubTypeStoppage;
-import com.example.factory.repositoty.stoppage.BaseTypeStoppageRepository;
-import com.example.factory.repositoty.stoppage.SubTypeStoppageRepository;
+import com.example.factory.repository.stoppage.BaseTypeStoppageRepository;
+import com.example.factory.repository.stoppage.SubTypeStoppageRepository;
 import com.example.factory.service.stoppage.SubTypeStoppageService;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class SubTypeStoppageServiceImpl implements SubTypeStoppageService {

@@ -1,8 +1,7 @@
 package com.example.factory.service.implement;
 
 import com.example.factory.model.Employee;
-import com.example.factory.model.Product;
-import com.example.factory.repositoty.EmployeeRepository;
+import com.example.factory.repository.EmployeeRepository;
 import com.example.factory.service.EmployeeService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -10,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {

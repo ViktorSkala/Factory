@@ -1,8 +1,7 @@
 package com.example.factory.service.implement;
 
 import com.example.factory.model.Machine;
-import com.example.factory.model.stoppage.BaseTypeStoppage;
-import com.example.factory.repositoty.MachineRepository;
+import com.example.factory.repository.MachineRepository;
 import com.example.factory.service.MachineService;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;

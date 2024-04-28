@@ -1,7 +1,6 @@
-package com.example.factory.repositoty;
+package com.example.factory.repository;
 
 import com.example.factory.model.ProductivityInHour;
-import com.example.factory.model.ProductivityInMinute;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

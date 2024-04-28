@@ -1,4 +1,4 @@
-package com.example.factory.repositoty.stoppage;
+package com.example.factory.repository.stoppage;
 
 import com.example.factory.model.stoppage.Stoppage;
 import org.springframework.data.domain.Page;

@@ -1,4 +1,4 @@
-package com.example.factory.repositoty;
+package com.example.factory.repository;
 
 import com.example.factory.model.Machine;
 import org.springframework.data.jpa.repository.JpaRepository;

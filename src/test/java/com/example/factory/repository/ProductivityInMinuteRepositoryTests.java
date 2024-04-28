@@ -1,16 +1,8 @@
 package com.example.factory.repository;
 
-import com.example.factory.model.Product;
-import com.example.factory.model.ProductivityInMinute;
-import com.example.factory.repositoty.ProductRepository;
-import com.example.factory.repositoty.ProductivityInMinuteRepository;
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.time.LocalDateTime;
-import java.time.Month;
 
 @SpringBootTest
 public class ProductivityInMinuteRepositoryTests {

@@ -5,7 +5,7 @@ import com.example.factory.dto.productivityInHour.ProductivityInHourFilterDto;
 import com.example.factory.dto.productivityInHour.ProductivityInHourResponseDto;
 import com.example.factory.model.Product;
 import com.example.factory.model.ProductivityInHour;
-import com.example.factory.repositoty.ProductivityInHourRepository;
+import com.example.factory.repository.ProductivityInHourRepository;
 import com.example.factory.service.ProductivityInHourService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

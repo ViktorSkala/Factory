@@ -1,10 +1,7 @@
 package com.example.factory.service.implement.stoppage;
 
-import com.example.factory.dto.stoppage.BaseTypeStoppageDto;
-import com.example.factory.model.Machine;
 import com.example.factory.model.stoppage.BaseTypeStoppage;
-import com.example.factory.model.stoppage.Stoppage;
-import com.example.factory.repositoty.stoppage.BaseTypeStoppageRepository;
+import com.example.factory.repository.stoppage.BaseTypeStoppageRepository;
 import com.example.factory.service.stoppage.BaseTypeStoppageService;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
@@ -13,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class BaseTypeStoppageServiceImpl implements BaseTypeStoppageService {

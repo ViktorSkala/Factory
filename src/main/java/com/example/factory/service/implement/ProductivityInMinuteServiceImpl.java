@@ -3,7 +3,7 @@ package com.example.factory.service.implement;
 import com.example.factory.dto.productivityInMinute.ProductivityInMinuteFilterDto;
 import com.example.factory.model.Product;
 import com.example.factory.model.ProductivityInMinute;
-import com.example.factory.repositoty.ProductivityInMinuteRepository;
+import com.example.factory.repository.ProductivityInMinuteRepository;
 import com.example.factory.service.ProductivityInMinuteService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

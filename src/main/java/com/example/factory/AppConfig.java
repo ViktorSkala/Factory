@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class appConfig {
+public class AppConfig {
 
     @Bean
     public ThreadGroup createThreadGroup() {

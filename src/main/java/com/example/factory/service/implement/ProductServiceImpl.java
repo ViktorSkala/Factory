@@ -2,8 +2,7 @@ package com.example.factory.service.implement;
 
 import com.example.factory.dto.ProductResponseDto;
 import com.example.factory.model.Product;
-import com.example.factory.model.stoppage.BaseTypeStoppage;
-import com.example.factory.repositoty.ProductRepository;
+import com.example.factory.repository.ProductRepository;
 import com.example.factory.service.ProductService;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
